@@ -30374,6 +30374,24 @@
           "rotation": 0,
           "type": "",
           "width": 0
+        },
+        {
+          "id": 30,
+          "name": "",
+          "visible": true,
+          "x": 416.438356164384,
+          "y": 578.082191780822,
+          "height": 93.1506849315068,
+          "properties": [
+            {
+              "name": "personalAreaPropertyData",
+              "type": "bool",
+              "value": true
+            }
+          ],
+          "rotation": 0,
+          "type": "",
+          "width": 126.027397260274
         }
       ],
       "opacity": 1,
@@ -35088,7 +35106,7 @@
     {
       "columns": 15,
       "firstgid": 1,
-      "image": "hall-chunk-1-d6ec17a6.png",
+      "image": "hall-chunk-1-d05c56d2.png",
       "imageheight": 480,
       "imagewidth": 480,
       "margin": 0,
@@ -35207,7 +35225,7 @@
   "height": 48,
   "infinite": false,
   "nextlayerid": 67,
-  "nextobjectid": 30,
+  "nextobjectid": 31,
   "orientation": "orthogonal",
   "properties": [
     {
