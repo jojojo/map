@@ -2,7 +2,7 @@
 
 import { bootstrapExtra, getVariables, initDoors } from "@workadventure/scripting-api-extra";
 
-console.log('Script started successfully');
+console.log('Script started successfully !');
 
 let currentPopup: any = undefined;
 
