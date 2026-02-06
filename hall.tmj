@@ -1011,6 +1011,23 @@
                  "width":0,
                  "x":481.829318089016,
                  "y":389.274533823329
+                }, 
+                {
+                 "height":93.1506849315068,
+                 "id":30,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"personalAreaPropertyData",
+                         "type":"bool",
+                         "value":true
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":126.027397260274,
+                 "x":416.438356164384,
+                 "y":578.082191780822
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1198,7 +1215,7 @@
          "y":0
         }],
  "nextlayerid":67,
- "nextobjectid":30,
+ "nextobjectid":31,
  "orientation":"orthogonal",
  "properties":[
         {
