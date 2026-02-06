@@ -1220,11 +1220,6 @@
          "name":"mapName",
          "type":"string",
          "value":"Conference"
-        }, 
-        {
-         "name":"script",
-         "type":"string",
-         "value":"main.ts"
         }],
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
