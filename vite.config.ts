@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import { defineConfig } from "vite";
 import { getMaps, getMapsOptimizers, getMapsScripts, LogLevel, OptimizeOptions } from "wa-map-optimizer-vite";
+import basicSsl from '@vitejs/plugin-basic-ssl';
 
 const maps = getMaps();
 
@@ -35,10 +36,17 @@ export default defineConfig({
     plugins: [...getMapsOptimizers(maps, optimizerOptions)],
     server: {
         host: "localhost",
+        port: 5174,
+        allowedHosts: ["supereloquent-lorette-fusibly.ngrok-free.dev"],
+        cors: {
+            origin: ["https://play.workadventu.re", "https://admin.workadventu.re"],
+            credentials: true,
+        },
         headers: {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
             "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization",
+            "Access-Control-Allow-Private-Network": "true",
             "Cache-Control": "no-cache, no-store, must-revalidate",
         },
         open: "/",
