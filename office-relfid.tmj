@@ -452,18 +452,6 @@
                  "y":596.085409252669
                 }, 
                 {
-                 "height":21.3523131672598,
-                 "id":21,
-                 "name":"from-hall",
-                 "opacity":1,
-                 "rotation":0,
-                 "type":"area",
-                 "visible":true,
-                 "width":19.5729537366548,
-                 "x":88.9679715302491,
-                 "y":545.373665480427
-                }, 
-                {
                  "height":18.84375,
                  "id":22,
                  "name":"",
@@ -482,6 +470,24 @@
                  "width":196.966080960854,
                  "x":35.8585965302491,
                  "y":36.8414701957295
+                }, 
+                {
+                 "height":32,
+                 "id":23,
+                 "name":"from-hall",
+                 "opacity":1,
+                 "properties":[
+                        {
+                         "name":"start",
+                         "type":"bool",
+                         "value":true
+                        }],
+                 "rotation":0,
+                 "type":"area",
+                 "visible":true,
+                 "width":32,
+                 "x":81.864768683274,
+                 "y":531.153024911032
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -564,7 +570,7 @@
          "y":0
         }],
  "nextlayerid":63,
- "nextobjectid":23,
+ "nextobjectid":24,
  "orientation":"orthogonal",
  "properties":[
         {
