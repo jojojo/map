@@ -409,7 +409,7 @@
                         {
                          "name":"exitUrl",
                          "type":"string",
-                         "value":"hall.tmj#from-office-relfid"
+                         "value":"hall.tmj#from-office-pedagogie"
                         }],
                  "rotation":0,
                  "type":"area",
@@ -430,7 +430,7 @@
                      "fontfamily":"Arial Rounded MT Bold",
                      "halign":"center",
                      "pixelsize":15,
-                     "text":"P\u00f4le Relation-Fid\u00e9lisation",
+                     "text":"P\u00f4le p\u00e9da\/gestion talents",
                      "valign":"center",
                      "wrap":true
                     },
