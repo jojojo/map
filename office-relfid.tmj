@@ -736,19 +736,6 @@
          "tilecount":60,
          "tileheight":32,
          "tilewidth":32
-        }, 
-        {
-         "columns":16,
-         "firstgid":3086,
-         "image":"..\/request_april_by_nicnubill_d7dvydh.png",
-         "imageheight":512,
-         "imagewidth":512,
-         "margin":0,
-         "name":"Office",
-         "spacing":0,
-         "tilecount":256,
-         "tileheight":32,
-         "tilewidth":32
         }],
  "tilewidth":32,
  "type":"map",
