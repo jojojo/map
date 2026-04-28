@@ -409,7 +409,7 @@
                         {
                          "name":"exitUrl",
                          "type":"string",
-                         "value":"hall.tmj#from-office-relfid"
+                         "value":"hall.tmj#from-office-techique"
                         }],
                  "rotation":0,
                  "type":"area",
