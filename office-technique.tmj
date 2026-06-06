@@ -777,7 +777,7 @@
         {
          "columns":25,
          "firstgid":3146,
-         "image":"..\/gather_interior_walls_1.6.png",
+         "image":"tilesets\/gather_interior_walls_1.6.png",
          "imageheight":10272,
          "imagewidth":800,
          "margin":0,
@@ -790,7 +790,7 @@
         {
          "columns":90,
          "firstgid":11171,
-         "image":"..\/gather_tables_2.1.png",
+         "image":"tilesets\/gather_tables_2.1.png",
          "imageheight":3200,
          "imagewidth":2880,
          "margin":0,
@@ -803,7 +803,7 @@
         {
          "columns":300,
          "firstgid":20171,
-         "image":"..\/mastersheet.png",
+         "image":"tilesets\/mastersheet.png",
          "imageheight":4160,
          "imagewidth":9600,
          "margin":0,
@@ -816,7 +816,7 @@
         {
          "columns":36,
          "firstgid":59171,
-         "image":"..\/gather_decoration_1.21.png",
+         "image":"tilesets\/gather_decoration_1.21.png",
          "imageheight":7072,
          "imagewidth":1152,
          "margin":0,
@@ -829,7 +829,7 @@
         {
          "columns":200,
          "firstgid":67127,
-         "image":"..\/decorations_mastersheet.png",
+         "image":"tilesets\/decorations_mastersheet.png",
          "imageheight":1600,
          "imagewidth":6400,
          "margin":0,
@@ -842,7 +842,7 @@
         {
          "columns":48,
          "firstgid":77127,
-         "image":"..\/gather_architecture_features.png",
+         "image":"tilesets\/gather_architecture_features.png",
          "imageheight":2496,
          "imagewidth":1536,
          "margin":0,
@@ -855,7 +855,7 @@
         {
          "columns":12,
          "firstgid":80871,
-         "image":"..\/gather_shadows_2.0.png",
+         "image":"tilesets\/gather_shadows_2.0.png",
          "imageheight":544,
          "imagewidth":384,
          "margin":0,
@@ -868,7 +868,7 @@
         {
          "columns":40,
          "firstgid":81075,
-         "image":"..\/gather_floors_4.1.png",
+         "image":"tilesets\/gather_floors_4.1.png",
          "imageheight":3008,
          "imagewidth":1280,
          "margin":0,
@@ -881,7 +881,7 @@
         {
          "columns":40,
          "firstgid":84835,
-         "image":"..\/gather_decoration_exterior_1.3.png",
+         "image":"tilesets\/gather_decoration_exterior_1.3.png",
          "imageheight":7840,
          "imagewidth":1280,
          "margin":0,
@@ -894,7 +894,7 @@
         {
          "columns":25,
          "firstgid":94635,
-         "image":"..\/gather_chairs_1.3.png",
+         "image":"tilesets\/gather_chairs_1.3.png",
          "imageheight":1024,
          "imagewidth":800,
          "margin":0,
@@ -907,7 +907,7 @@
         {
          "columns":40,
          "firstgid":95435,
-         "image":"..\/gather_signage_1.2.png",
+         "image":"tilesets\/gather_signage_1.2.png",
          "imageheight":2529,
          "imagewidth":1280,
          "margin":0,
@@ -920,7 +920,7 @@
         {
          "columns":2,
          "firstgid":98595,
-         "image":"..\/macbooks gaby0.png",
+         "image":"tilesets\/macbooks gaby0.png",
          "imageheight":64,
          "imagewidth":64,
          "margin":0,
@@ -933,7 +933,7 @@
         {
          "columns":48,
          "firstgid":98599,
-         "image":"..\/gather_walls_3.1.png",
+         "image":"tilesets\/gather_walls_3.1.png",
          "imageheight":4256,
          "imagewidth":1536,
          "margin":0,
