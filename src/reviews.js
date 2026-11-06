@@ -89,6 +89,7 @@
                     tile: review ? (expired ? "airmes-review-stale" : review.current ? "airmes-review-current" : "airmes-review-pending") : null, layer: "reviews" };
             }));
         }
+        if (office) return;
         const others = snapshot ? Math.max(0, snapshot.available - assignments.size) : 0;
         const text = snapshot
             ? `${assignments.size} reviews affichées · ${snapshot.totalOpen} MR ouvertes${others ? ` · +${others} autres reviews` : ""}${expired ? " · Données périmées" : " · Approchez un écran"}`
@@ -137,7 +138,7 @@
         subscriptions.forEach(subscription => subscription.unsubscribe());
         for (const display of displays) WA.room.website.delete(display.name).catch(() => {});
         closePopup();
-        WA.ui.banner.closeBanner();
+        if (!office) WA.ui.banner.closeBanner();
     }, { once: true });
     draw();
     await refresh();

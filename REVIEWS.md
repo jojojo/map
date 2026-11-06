@@ -45,8 +45,8 @@ n'utilise aucune grille fixe pour ce bureau. Les fonctions communes du bureau
 
 À l'approche, une fiche propose Airmes dans un nouvel onglet et le lien GitLab.
 Les états sont lus toutes les 30 secondes ; après trois minutes sans scan récent,
-les écrans deviennent gris. Le bandeau donne accès à toutes les MR et compte les
-reviews supplémentaires si les 15 emplacements sont occupés.
+les écrans deviennent gris. Le bureau technique n'affiche pas de bandeau permanent.
+Le bandeau d'état et le lien vers toutes les MR restent dans la salle dédiée `reviews.tmj`.
 
 Le snapshot n8n préparé attribue les 15 postes de manière partagée, conserve les
 affectations jusqu'à disparition d'une review et remplit les postes libres en

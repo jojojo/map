@@ -89,17 +89,17 @@ test('both validation labels and a current deployment are needed for green', asy
     assert.match(runtime.displays[0].url, /#pending$/);
 });
 
-test('station allocation follows shared backend slots and reports overflow beyond 15 reviews', async () => {
+test('station allocation follows shared backend slots without a banner in the office', async () => {
     const rows = Array.from({ length: 17 }, (_, i) => mr(i + 1));
     const runtime = await office(rows);
-    assert.match(runtime.banner.text, /\+2 autres reviews/);
+    assert.equal(runtime.banner, undefined);
     await runtime.update(rows.filter(row => row.iid !== 1 && row.iid !== 17)
         .map(row => row.iid === 16 ? { ...row, slot: 0 } : row).reverse(), 16);
     runtime.enter(2);
     assert.match(runtime.popup.text, /!2 /);
     runtime.enter(1);
     assert.match(runtime.popup.text, /!16 /);
-    assert.match(runtime.banner.text, /\+1 autres reviews/);
+    assert.equal(runtime.banner, undefined);
 });
 
 test('invalid feed preserves the last state; stale data disables opening and cleanup releases everything', async () => {
