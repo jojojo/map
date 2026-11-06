@@ -1,0 +1,373 @@
+{
+  "name": "WorkAdventure — Reviews Airmes",
+  "nodes": [
+    {
+      "id": "e290114d-793e-590a-9a7b-ec6bb9314a42",
+      "name": "Chaque minute",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "b68107e6-fcf6-52a2-8cd0-19cf1a3de965",
+      "name": "MR ouvertes",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        220,
+        0
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "https://gitlab.eoloa.eu/api/v4/projects/6/merge_requests?state=opened&per_page=100",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "gitlabApi",
+        "options": {
+          "timeout": 20000,
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "responseFormat": "json"
+            }
+          },
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          },
+          "pagination": {
+            "pagination": {
+              "paginationMode": "updateAParameterInEachRequest",
+              "parameters": {
+                "parameters": [
+                  {
+                    "type": "qs",
+                    "name": "page",
+                    "value": "={{ $pageCount + 1 }}"
+                  }
+                ]
+              },
+              "paginationCompleteWhen": "other",
+              "completeExpression": "={{ $response.body.length < 100 }}",
+              "requestInterval": 100
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "1a6f844f-f422-541c-86f7-423b09010ca6",
+      "name": "Environnements",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        440,
+        0
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "https://gitlab.eoloa.eu/api/v4/projects/6/environments?states=available&per_page=100",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "gitlabApi",
+        "options": {
+          "timeout": 20000,
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "responseFormat": "json"
+            }
+          },
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          },
+          "pagination": {
+            "pagination": {
+              "paginationMode": "updateAParameterInEachRequest",
+              "parameters": {
+                "parameters": [
+                  {
+                    "type": "qs",
+                    "name": "page",
+                    "value": "={{ $pageCount + 1 }}"
+                  }
+                ]
+              },
+              "paginationCompleteWhen": "other",
+              "completeExpression": "={{ $response.body.length < 100 }}",
+              "requestInterval": 100
+            }
+          }
+        }
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "d6f83517-4fbb-55a8-847f-6e55ecec794a",
+      "name": "Reviews disponibles",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        660,
+        0
+      ],
+      "parameters": {
+        "jsCode": "const envs = $input.all().flatMap(i => i.json.body).filter(e => e?.name?.startsWith('review/')); return envs.length ? envs.map(e => ({json:e})) : [{json:{empty:true}}];"
+      }
+    },
+    {
+      "id": "5cd6fb09-7e30-59ec-abf3-9c63aea0254e",
+      "name": "Au moins une review",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        880,
+        0
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "b90fc1ec-44c8-5dae-8b6d-333f595176bb",
+              "leftValue": "={{ $json.empty !== true }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "99b7f61c-0766-5014-b941-049b9271f274",
+      "name": "Détail des déploiements",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1100,
+        0
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "=https://gitlab.eoloa.eu/api/v4/projects/6/environments/{{ $json.id }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "gitlabApi",
+        "options": {
+          "timeout": 20000,
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "responseFormat": "json"
+            }
+          },
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "4b6c1368-87ab-5ffb-a855-d65e6bebd2ca",
+      "name": "Mémoriser les postes",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1320,
+        0
+      ],
+      "parameters": {
+        "jsCode": "/** Only successful GitLab review deployments attached to an open MR become desks. */\nfunction buildSnapshot(mrs, environments, previous = {}, now = new Date().toISOString()) {\n    const capacity = 15;\n    const byIid = new Map(mrs.map((mr) => [mr.iid, mr]));\n    const candidates = new Map();\n    for (const env of environments) {\n        if (env.state !== \"available\" || !env.name?.startsWith(\"review/\")) continue;\n        const deployment = env.last_deployment;\n        if (deployment?.status !== \"success\") continue;\n        const match = /^refs\\/merge-requests\\/(\\d+)\\/head$/.exec(deployment.ref || \"\");\n        const mr = match\n            ? byIid.get(Number(match[1]))\n            : mrs.find((item) => item.source_branch === deployment.ref);\n        if (!mr || mr.state !== \"opened\") continue;\n        if (typeof env.external_url !== \"string\" || !/^https:\\/\\/review-[a-z0-9-]+\\.application-airmes\\.eu\\/?$/.test(env.external_url)) continue;\n        candidates.set(mr.iid, {\n            iid: mr.iid, title: mr.title, branch: mr.source_branch, draft: Boolean(mr.draft),\n            reviewUrl: env.external_url.replace(/\\/$/, \"\"), mrUrl: `https://gitlab.eoloa.eu/airmes/airmes/-/merge_requests/${mr.iid}`,\n            deployedAt: deployment.updated_at || deployment.created_at || null,\n            current: deployment.sha === mr.sha,\n            labels: (Array.isArray(mr.labels) ? mr.labels : []).filter(label => label === \"Test OK\" || label === \"Review OK\"),\n        });\n    }\n    const used = new Set();\n    const reviews = [...candidates.values()].sort((a, b) => a.iid - b.iid);\n    for (const review of reviews) {\n        const slot = previous.reviews?.find((old) => old.iid === review.iid)?.slot;\n        if (Number.isInteger(slot) && slot >= 0 && slot < capacity && !used.has(slot)) {\n            review.slot = slot;\n            used.add(slot);\n        }\n    }\n    const priority = review => review.current\n        ? (review.labels.includes(\"Test OK\") && review.labels.includes(\"Review OK\") ? 2 : 0)\n        : 1;\n    for (const review of [...reviews].sort((a, b) => priority(a) - priority(b) || a.iid - b.iid)) {\n        if (review.slot !== undefined) continue;\n        const slot = Array.from({ length: capacity }, (_, i) => i).find((i) => !used.has(i));\n        if (slot === undefined) break;\n        review.slot = slot;\n        used.add(slot);\n    }\n    return { version: 1, updatedAt: now, totalOpen: mrs.length,\n        available: reviews.length, overflow: Math.max(0, reviews.length - capacity),\n        reviews: reviews.filter((review) => review.slot !== undefined) };\n}\n\n\nconst data = $getWorkflowStaticData('global');\nconst mrs = $('MR ouvertes').all().flatMap(i => i.json.body);\nif (mrs.some(m => !Number.isInteger(m.iid))) throw new Error('Invalid GitLab MR response');\nconst envs = $input.all().map(i => i.json.body).filter(Boolean);\ndata.snapshot = buildSnapshot(mrs, envs, data.snapshot);\nreturn [{json:{updatedAt:data.snapshot.updatedAt, available:data.snapshot.available}}];"
+      }
+    },
+    {
+      "id": "eeeaeae3-b2db-5f56-a4a3-3a4dc69aaec9",
+      "name": "Flux pour la map",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        1540,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "workadventure-airmes-reviews-example",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "webhookId": "570fa6e6-b47a-5e32-ad08-2306a8b47977"
+    },
+    {
+      "id": "51481190-9d9d-5e4e-ba51-484955e9d008",
+      "name": "Lire le dernier état",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1760,
+        0
+      ],
+      "parameters": {
+        "jsCode": "const snapshot = $getWorkflowStaticData('global').snapshot; return [{json: snapshot || {version:1, updatedAt:'1970-01-01T00:00:00.000Z',totalOpen:0,available:0,overflow:0,reviews:[]}}];"
+      }
+    },
+    {
+      "id": "fa685123-5b87-52eb-be53-3b7741f0c00d",
+      "name": "Répondre à la map",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1980,
+        0
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              },
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Chaque minute": {
+      "main": [
+        [
+          {
+            "node": "MR ouvertes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MR ouvertes": {
+      "main": [
+        [
+          {
+            "node": "Environnements",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Environnements": {
+      "main": [
+        [
+          {
+            "node": "Reviews disponibles",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reviews disponibles": {
+      "main": [
+        [
+          {
+            "node": "Au moins une review",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Au moins une review": {
+      "main": [
+        [
+          {
+            "node": "Détail des déploiements",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mémoriser les postes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Détail des déploiements": {
+      "main": [
+        [
+          {
+            "node": "Mémoriser les postes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Flux pour la map": {
+      "main": [
+        [
+          {
+            "node": "Lire le dernier état",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lire le dernier état": {
+      "main": [
+        [
+          {
+            "node": "Répondre à la map",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "none",
+    "saveManualExecutions": false,
+    "executionTimeout": 55
+  },
+  "active": false
+}

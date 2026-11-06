@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>État de la review</title>
+    <style>
+        html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #11131a; pointer-events: none; }
+        div { display: none; position: fixed; inset: 0; }
+        div:target { display: block; }
+        #off { background: #11131a; }
+        #ready { background: #268bff; }
+        #validated { background: #26bf6c; }
+        #pending { background: #f0a331; }
+        #stale { background: #777d89; }
+    </style>
+</head>
+<body>
+    <div id="off" aria-label="Aucune review"></div>
+    <div id="ready" aria-label="Review à tester"></div>
+    <div id="validated" aria-label="Review validée"></div>
+    <div id="pending" aria-label="Nouveaux commits à déployer"></div>
+    <div id="stale" aria-label="Informations périmées"></div>
+</body>
+</html>

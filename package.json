@@ -9,7 +9,8 @@
     "build": "tsc && vite build",
     "prod": "vite preview",
     "upload": "npm run build && upload-wa-map",
-    "upload-only": "upload-wa-map"
+    "upload-only": "upload-wa-map",
+    "test:reviews": "node --test integrations/airmes-reviews/*.test.cjs"
   },
   "devDependencies": {
     "@types/node": "^18.15.11",
